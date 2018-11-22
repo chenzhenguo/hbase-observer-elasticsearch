@@ -3,6 +3,7 @@ package org.eminem.hbase.observer6;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.action.ActionRequest;
+import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequestBuilder;
@@ -33,7 +34,8 @@ public class ElasticSearchBulkOperator {
     static {
         // init es bulkRequestBuilder
         bulkRequestBuilder = ESClient.client.prepareBulk();
-        bulkRequestBuilder.setRefresh(true);
+     //   bulkRequestBuilder.setRefresh(true);
+
 
         // init thread pool and set size 1
         scheduledExecutorService = Executors.newScheduledThreadPool(1);
@@ -89,7 +91,7 @@ public class ElasticSearchBulkOperator {
             } catch (Exception e) {// two cause: 1. transport client is closed 2. None of the configured nodes are available
                 LOG.error(" Bulk Request " + " index error : " + e.getMessage());
                 LOG.error("Reconnect the ES server...");
-                List<ActionRequest> requests = bulkRequestBuilder.request().requests();
+                List<DocWriteRequest<?>> requests = bulkRequestBuilder.request().requests();
                 ESClient.client.close();
                 ESClient.initEsClient();
                 bulkRequestBuilder = ESClient.client.prepareBulk();

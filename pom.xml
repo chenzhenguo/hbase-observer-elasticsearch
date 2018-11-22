@@ -23,7 +23,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
      <!--   <elasticsearch.version>2.4.0</elasticsearch.version>-->
          <elasticsearch-transport.version>6.5.0</elasticsearch-transport.version>
-        <elasticsearch.version>6.5.1</elasticsearch.version>
+        <elasticsearch.version>6.5.0</elasticsearch.version>
         <hbase-server.version>1.2.0-cdh5.8.2</hbase-server.version>
         <maven-assembly-plugin.version>2.6</maven-assembly-plugin.version>
         <commons-logging.version>1.2</commons-logging.version>
@@ -59,7 +59,11 @@
             <artifactId>guava</artifactId>
             <version>18.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.30.Final</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -95,6 +99,14 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>6</source>
+                    <target>6</target>
+                </configuration>
             </plugin>
         </plugins>
     </build>

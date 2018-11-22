@@ -6,6 +6,7 @@ import org.apache.hadoop.util.StringUtils;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.TransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
 
 import java.lang.reflect.Field;
 import java.net.InetAddress;
@@ -90,16 +91,12 @@ public class ESClient {
 
         try {
             // 创建配置对象 myClusterName处为es集群名称
-            Settings settings = Settings.settingsBuilder()
+            Settings settings = Settings.builder()
                     .put("cluster.name", "myClusterName").put("client.transport.sniff", true).build();
             // 创建客户端 host1,host2处为es集群节点的ip地址
-            TransportClient client = TransportClient
-                    .builder()
-                    .settings(settings)
-                    .build()
-                    .addTransportAddress(
-                            new InetSocketTransportAddress(InetAddress
-                                    .getByName("192.168.1.181"), 9300));
+            TransportClient   client = new PreBuiltTransportClient(settings)
+                    .addTransportAddress(new TransportAddress(InetAddress.getByName("192.168.1.182"),  9300));
+            client.close();
 
         } catch (UnknownHostException e) {
             e.printStackTrace();

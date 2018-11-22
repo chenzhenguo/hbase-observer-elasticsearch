@@ -5,7 +5,9 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.util.StringUtils;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
-import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.common.transport.TransportAddress;
+import org.elasticsearch.transport.client.PreBuiltTransportClient;
+import org.eminem.hbase.observer6.ESClient;
 
 import java.lang.reflect.Field;
 import java.net.InetAddress;
@@ -109,13 +111,9 @@ public class EsClient {
         Settings settings = Settings.builder().put("cluster.name", this.clusterName).put("client.transport.sniff", true).build();
 
         try {
-            client = TransportClient
-                    .builder()
-                    .settings(settings)
-                    .build()
-                    .addTransportAddress(
-                            new InetSocketTransportAddress(InetAddress
-                                    .getByName(this.getOneNodeHost()), this.nodePort));
+            // 创建客户端 host1,host2处为es集群节点的ip地址
+            client = new PreBuiltTransportClient(settings)
+                    .addTransportAddress(new TransportAddress(InetAddress.getByName(ESClient.nodeHost),  ESClient.nodePort));
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }

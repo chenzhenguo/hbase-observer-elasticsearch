@@ -3,6 +3,7 @@ package cn.net.polyinfo.hbase.observer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.action.ActionRequest;
+import org.elasticsearch.action.DocWriteRequest;
 import org.elasticsearch.action.bulk.BulkRequestBuilder;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.delete.DeleteRequestBuilder;
@@ -88,7 +89,7 @@ public class ElasticSearchBulkOperator {
             } catch (Exception e) {// two cause: 1. transport client is closed 2. None of the configured nodes are available
                 LOG.error(" Bulk Request " + " index error : " + e.getMessage());
                 LOG.error("Reconnect the ES server...");
-                List<ActionRequest> requests = bulkRequestBuilder.request().requests();
+                List<DocWriteRequest<?>> requests = bulkRequestBuilder.request().requests();
                 esClient.getClient().close();
                 esClient.repeatInitEsClient();
                 bulkRequestBuilder = esClient.getClient().prepareBulk();
